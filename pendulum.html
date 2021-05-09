@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name = "viewport" content = "width=device-width, height=device-height, initial-scale = 1, user-scalable = no">
+    <title>Пружинный маятник</title>
+  <style>
+  body{
+    display:inline-flex;
+    margin:0;
+    padding:0;
+    width:100vw;
+    height:100vh;
+    font-size:3.5vmin;
+    font-family: sans-serif;
+    -moz-user-select: none; -khtml-user-select: none; -webkit-user-select: none; user-select: none;
+    overflow-x:hidden;
+    background: #ddd;
+    position:absolute;
+  }
+  #navigation{
+    position: relative;
+    display:inline-block;
+    width:58vw;
+    height:100vh;
+  }
+  .subject{
+    display:block;
+    font-weight: bold;
+    font-size: 5vmin;
+    color:#444;
+  }
+.parameter{
+    width:7vw;
+    font-size: 3.5vmin;
+    display: inline-block;
+    border:0.4vmin solid black;
+    padding: 0 0.5vw;
+    text-align: center;
+  }
+  .step{
+    display: inline-block;
+    background: #1e9431;
+    padding: 1vh 2vw;
+    margin:0;
+    font-size:3.5vmin;
+    cursor: pointer;
+    color:white;
+    border-radius:2vmin;
+    box-shadow: 0 0.3vh #444;
+  }
+  .step:active {
+      box-shadow: 0 0.2vh #222; transform: translateY(0.1vh);
+  }
+  #plate{
+    display:none;
+    background:rgba(0, 0, 0, 0.5);
+    height:35vh;
+    width:59vw;
+    position: absolute;
+    margin-left:-1vmin;
+    margin-top:9vmin;
+    z-index: 1;
+  }
+  #parameters{
+    padding-top:2vh;
+    height:43vh;
+    border-bottom: 1vh solid gray;
+  }
+  #characteristics{
+    padding-top:6vh;
+    height:48vh;
+  }
+  #visual{
+    position: relative;
+    display:inline-block;
+    width:42vw;
+    height:100vh;
+  }
+  #pendulum{
+    display:block;
+    text-align: right;
+    margin: 0 auto;
+    width:15vmin;
+  }
+  #pendant{
+    border-bottom: 0.2rem solid black;
+    position: relative;
+    display:block;
+    margin-top: 6vh;
+    margin-left:auto;
+    margin-right:auto;
+    font-size:4vw;
+    line-height: 2.5vw;
+    width:20vw;
+    text-align:center;
+  }
+  #spring{
+    display:block;
+    position: relative;
+    margin-right:auto;
+    margin-left:auto;
+    margin-top:-0.3vmin;
+    width:18vmin;
+  }
+  .springRing{
+    height: 2.8333vmin;
+    width: 5.6654vmin;
+    position: relative;
+    margin-left: auto;
+    margin-right: 10vmin;
+  }
+  .springLast{
+    background: linear-gradient(to bottom right, transparent 35%, black, transparent 62%);
+    height: 2vmin;
+    width: 1vmin;
+    margin: 0 auto;
+  }
+  #animationButton{
+      width: 20vmin;
+      height: 7vmin;
+      line-height: 7vmin;
+      background: darkred;
+      font-size: 4vmin;
+      color: white;
+      font-weight: bold;
+      display: block;
+      box-shadow: 0 0.5vh #444;
+      border-radius: 15px;
+      cursor: pointer;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 2vh;
+  }
+  #animationButton:active {
+      box-shadow: 0 0.3vh #222; transform: translateY(0.2vh);
+  }
+  #frequency, #timeField, #quantity{
+    display:inline-block;
+    font-weight:bold;
+    text-align:left;
+  }
+   #position{
+     display:inline-block;
+     font-weight:bold;
+     text-align:right;
+     width:8vmin;
+   }
+  </style>
+  </head>
+  <body>
+  <div id="visual">
+<div id="animationButton">Play</div>
+<div id="pendant">/ / / / / / /</div>
+<div id="pendulum">
+  <div id="spring">
+  <div class="springRing" style="background: linear-gradient(to bottom right, transparent 40%, black, transparent 59%);"></div>
+  <div class="springRing" style="background: linear-gradient(to bottom left, transparent 42%, black, transparent 54%);"></div>
+  <div class="springRing"style="background: linear-gradient(to bottom right, transparent 40%, black, transparent 59%);"></div>
+  <div class="springRing" style="background: linear-gradient(to bottom left, transparent 42%, black, transparent 54%);"></div>
+  <div class="springRing"style="background: linear-gradient(to bottom right, transparent 40%, black, transparent 59%);"></div>
+  <div class="springRing" style="background: linear-gradient(to bottom left, transparent 42%, black, transparent 54%);"></div>
+  <div class="springRing"style="background: linear-gradient(to bottom right, transparent 40%, black, transparent 59%);"></div>
+  <div class="springRing" style="background: linear-gradient(to bottom left, transparent 42%, black, transparent 54%);"></div>
+  <div class="springRing"style="background: linear-gradient(to bottom right, transparent 40%, black, transparent 59%);"></div>
+  <div class="springRing" style="background: linear-gradient(to bottom left, transparent 42%, black, transparent 54%);"></div>
+  </div>
+  <div class="springLast"></div>
+  <div id="circle" style="width: 10vmin; height: 10vmin; border-radius: 50%; margin: -1vmin auto; background: radial-gradient(circle at 20vmin 20vmin, #999, #000);"></div>
+</div>
+  </div>
+  <div id="navigation">
+    <div id="plate"></div>
+    <div id="parameters">
+      <div class="subject">Параметры</div>
+      <br>
+      <div class="step" onclick="if(Number(mass.innerHTML)>0.5 ){ mass.innerHTML=(Number(mass.innerHTML)-0.1).toFixed(1); changeRadius(false);}">
+        &ndash;</div>
+      <div id="mass" class="parameter">0.5</div>
+      <div class="step" onclick="if(Number(mass.innerHTML)<1){mass.innerHTML=(Number(mass.innerHTML)+0.1).toFixed(1); changeRadius(true); }">
+        +</div>
+      - Масса груза m (кг)
+      <br><br>
+      <div class="step" onclick="if(Number(springConst.innerHTML)>5 ){springConst.innerHTML=Number(springConst.innerHTML)-1; frequency.innerHTML=calculateFrequence().toFixed(3);}">
+        &ndash;</div>
+      <div id="springConst" class="parameter">5</div>
+      <div class="step" onclick="if(Number(springConst.innerHTML)<9){springConst.innerHTML=Number(springConst.innerHTML)+1; frequency.innerHTML=calculateFrequence().toFixed(3);}">
+        +</div> - Жесткость k (Н/м) <br><br>
+      <div class="step" onclick="if(Number(deviation.innerHTML)>0 ){deviation.innerHTML=(Number(deviation.innerHTML)-0.2).toFixed(1); position.innerHTML=deviation.innerHTML;  movingX(Number(deviation.innerHTML));}">
+        &ndash;</div> <div id="deviation" class="parameter">10</div>
+      <div class="step" onclick="if(Number(deviation.innerHTML)<20 ){deviation.innerHTML=(Number(deviation.innerHTML)+0.2).toFixed(1); position.innerHTML=deviation.innerHTML; movingX(Number(deviation.innerHTML));}">
+        +</div>
+        - Отклонение x (см)
+    </div>
+    <div id="characteristics">
+      <div class="subject">Характеристики</div> <br>
+      Частота: <div id="frequency"></div> Гц <br><br>
+      Время колебаний: <div id="timeField">0</div> сек <br><br>
+      Количество колебаний: <div id="quantity">0</div> <br><br>
+      Координата x:<div id="position">10</div> см
+    </div>
+  </div>
+<script>
+// Переменная playAnimation указывает, запущена ли анимация
+let playAnimation = false;
+frequency.innerHTML=calculateFrequence().toFixed(3);
+movingX(Number(deviation.innerHTML));
+function movingX(dimension){
+  let rings=spring.querySelectorAll('div');
+  // Пружина разбивается на кольца (rings), положение которых определяет состояние всей системы
+  rings.forEach((ring) => {
+  ring.style.height=`${2+dimension/12}vmin`;
+  ring.style.width=`${Math.sqrt(40-Math.pow(2+dimension/12,2))}vmin`;
+ });
+}
+function changeRadius(operator){
+  let massNumber = Number(mass.innerHTML);
+  let circleWidthNumber=Number(circle.style.width.substring(0,circle.style.width.length-4));
+  let massChange=0.1/(massNumber);
+  frequency.innerHTML=calculateFrequence().toFixed(3);
+  // В зависимости от значения  переменной operator (true) или (false) определяется, увеличивается ли радиус тела или уменьшается
+  if (operator){
+    circle.style.width=`${(circleWidthNumber*Math.cbrt(1+massChange))}vmin`;
+    circle.style.height=circle.style.width;
+  }
+  else{
+    circle.style.width=`${circleWidthNumber*(Math.cbrt(1-massChange))}vmin`;
+    circle.style.height=circle.style.width;
+  }
+}
+animationButton.onclick=function(){
+  playAnimation=!playAnimation;
+  if (!playAnimation) {
+    movingX(Number(deviation.innerHTML));
+    animationButton.innerHTML='Play';
+    plate.style.display='none';
+    timeField.innerHTML='0';
+    quantity.innerHTML='0';
+    position.innerHTML=deviation.innerHTML;
+    parameters.querySelectorAll('.step').forEach((button) => {
+    button.style.background='#1e9431';
+    });
+  }
+  else {
+    animationButton.innerHTML='Stop';
+    plate.style.display="block";
+    parameters.querySelectorAll('.step').forEach((button) => {
+    button.style.background='#999';
+  });
+    timer(0,0);
+}}
+function timer(time, periods){
+  if (!playAnimation) return;
+  else{
+    time++;
+    // Записываются секунды
+    if(time%100==0) timeField.innerHTML=Number(timeField.innerHTML)+1;
+    // Высчитывается, записывается и изменяется позиция
+    let positionX=(Number(deviation.innerHTML)*Math.cos(Math.sqrt(Number(springConst.innerHTML)/Number(mass.innerHTML))*time/100));
+    movingX(positionX);
+    position.innerHTML=positionX.toFixed(1);
+    // Отсчет периодов
+    quantity.innerHTML=Math.floor(time/100*calculateFrequence());
+    setTimeout(timer, 10, time, periods);
+  }}
+  function calculateFrequence(){
+    return Math.sqrt(Number(springConst.innerHTML/Number(mass.innerHTML)))/(2*Math.PI);
+  }
+  </script>
+  </body>
+  </html>
