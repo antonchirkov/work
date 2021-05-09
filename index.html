@@ -18,7 +18,7 @@ input[type="password"] {
   font-size: 16px;
 }
   body{
-    touch-action: manipulation;
+      touch-action: pan-x pan-y;
     display:inline-flex;
     margin:0;
     padding:0;
@@ -282,9 +282,7 @@ function timer(time, periods){
   function calculateFrequence(){
     return Math.sqrt(Number(springConst.innerHTML/Number(mass.innerHTML)))/(2*Math.PI);
   }
-  document.addEventListener('touchmove', function (event) {
-  if (event.scale !== 1) { event.preventDefault(); }
-}, false);
+
   </script>
   </body>
   </html>
