@@ -7,7 +7,7 @@
     <title>Пружинный маятник</title>
   <style>
     :root {
-  touch-action: pan-x pan-y;
+  touch-action: none;
   height: 100% 
 }
     html {
@@ -279,7 +279,12 @@ function timer(time, periods){
   function calculateFrequence(){
     return Math.sqrt(Number(springConst.innerHTML/Number(mass.innerHTML)))/(2*Math.PI);
   }
-
+document.addEventListener('touchmove', function(event) {
+        event = event.originalEvent || event;
+        if (event.scale !== 1) {
+           event.preventDefault();
+        }
+    }, passive:false);
   </script>
   </body>
   </html>
