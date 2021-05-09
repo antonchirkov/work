@@ -282,12 +282,21 @@ function timer(time, periods){
   function calculateFrequence(){
     return Math.sqrt(Number(springConst.innerHTML/Number(mass.innerHTML)))/(2*Math.PI);
   }
-document.addEventListener('touchmove', function(event) {
-    event = event.originalEvent || event;
-    if(event.scale > 1) {
-        event.preventDefault();
-    }
-}, false);
+let preLastTouchStartAt = 0;
+let lastTouchStartAt = 0;
+const delay = 500;
+
+document.addEventListener('touchstart', () => {
+  preLastTouchStartAt = lastTouchStartAt;
+  lastTouchStartAt = +new Date();
+});
+document.addEventListener('touchend', (event) => {
+  const touchEndAt = +new Date();
+  if (touchEndAt - preLastTouchStartAt < delay) {
+    event.preventDefault();
+    event.target.click();
+  }
+});
   </script>
   </body>
   </html>
