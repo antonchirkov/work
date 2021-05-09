@@ -267,6 +267,11 @@ function timer(time, periods){
   function calculateFrequence(){
     return Math.sqrt(Number(springConst.innerHTML/Number(mass.innerHTML)))/(2*Math.PI);
   }
+  document.documentElement.addEventListener('touchstart', function (event) {
+if (event.touches.length > 1) {
+event.preventDefault();
+}
+}, false);
   </script>
   </body>
   </html>
