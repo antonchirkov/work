@@ -281,17 +281,9 @@ function timer(time, periods){
   function calculateFrequence(){
     return Math.sqrt(Number(springConst.innerHTML/Number(mass.innerHTML)))/(2*Math.PI);
   }
-  document.addEventListener("wheel", e => {
-        // suppress browsers default zoom-behavior:
-        e.preventDefault();
-
-        // execution my own custom zooming-behavior:
-        if (e.deltaY > 0) {
-            this._zoom(1);
-        } else {
-            this._zoom(-1);
-        }
-    });
+document.addEventListener('touchmove', function (event) {
+  if (event.scale !== 1) { event.preventDefault(); }
+}, false);
   </script>
   </body>
   </html>
